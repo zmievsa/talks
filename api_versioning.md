@@ -24,7 +24,7 @@ When you leave, you'll have enough information to make your API Versioning user-
 
 ## Tags
 
-API Versioning, API, Stripe, Open-Source, Open Source, Web Development, Backend
+API Versioning, API, API-First, Stripe, GraphQL, Open-Source, Open Source, Web Development, Backend
 
 ## Abstract for the commitee
 
