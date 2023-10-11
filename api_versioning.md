@@ -52,18 +52,18 @@ Obviously, there are many more things to consider when versioning. I will provid
 
 Links for reference:
 
-<https://github.com/Ovsyanka83/cadwyn>
-<https://stripe.com/blog/api-versioning>
-<https://habr.com/ru/companies/superjob/articles/577650/>
-<https://engineering.linkedin.com/blog/2022/-under-the-hood--how-we-built-api-versioning-for-linkedin-market>
-<https://smartlogic.io/blog/2012-12-12-developing-an-api/>
-<https://thenewstack.io/tricks-api-versioning/>
-<https://github.com/dotnet/aspnet-api-versioning>
-<https://github.com/sjkaliski/pinned>
-<https://github.com/phillbaker/gates>
-<https://github.com/lukepolo/laravel-api-migrations>
-<https://github.com/tomschlick/request-migrations>
-<https://github.com/keygen-sh/request_migrations>
+* <https://github.com/Ovsyanka83/cadwyn>
+* <https://stripe.com/blog/api-versioning>
+* <https://habr.com/ru/companies/superjob/articles/577650/>
+* <https://engineering.linkedin.com/blog/2022/-under-the-hood--how-we-built-api-versioning-for-linkedin-market>
+* <https://smartlogic.io/blog/2012-12-12-developing-an-api/>
+* <https://thenewstack.io/tricks-api-versioning/>
+* <https://github.com/dotnet/aspnet-api-versioning>
+* <https://github.com/sjkaliski/pinned>
+* <https://github.com/phillbaker/gates>
+* <https://github.com/lukepolo/laravel-api-migrations>
+* <https://github.com/tomschlick/request-migrations>
+* <https://github.com/keygen-sh/request_migrations>
 
 ## Video for the program commitee
 
