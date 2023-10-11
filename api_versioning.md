@@ -14,11 +14,18 @@ Please note that I can present this talk in either Russian or English -- whichev
 
 *The audience only has the titles of the talks and abstracts to decide which track to go to. Therefore, in the theses, it is necessary to outline the range of problems that you solve in the talk as specifically as possible. If your approach allows you to improve the performance of some software, then mention the size of the improvements, mention for which particular class of tasks and technology stack this approach is applicable. It is important that all the questions stated in the abstracts actually receive an answer in the talk. The discrepancy between the abstracts and the content of the talk upsets the audience very much.*
 
-Web API Versioning is a way to allow your developers to move quickly and break things while your clients will enjoy the stable API in long cycles. It is best practice for any API-first company to have API Versioning in one way or another. Otherwise the company will either be unable to improve their API or their clients will have their integrations broken every few months.
-vers
-The problem is: there is no information on how to implement it. If you try searching for methods of API Versioning, you will see thousands of articles on whether to put the version into the URL or into a header, a few pieces of ASP.NET documentation that discuss their platform-specific versioning, and a single article by Stripe that actually delves deep into the subject matter. Sadly, even they do not provide all details.
+Web API Versioning is a way to allow your developers to move quickly and break things, while ensuring your clients can enjoy the stable API in long cycles.
 
-I'll cover all sorts of approaches you can pick to add incompatible features into your API: extremely stable and expensive, easy-looking but horrible in practice, and even completely versionless yet viable. I will provide you with the best practices of how you could implement a modern API versioning solution and will discuss the one we chose at Monite in great detail.
+It is considered a best practice for any API-first company to implement API Versioning in one way or another.
+
+Otherwise, the company will either be unable to enhance its API or risk breaking clients integrations every few months.
+
+The problem is: there is the lack of information on how to implement API versioning effectively.
+
+If you try searching for methods of API Versioning, you will see thousands of articles on whether to put the version into the URL or into a header, a few pieces of ASP.NET documentation that discuss their platform-specific versioning, and a single article by Stripe that actually delves deep into the subject matter. Sadly, even they do not provide all details.
+
+I'll cover all sorts of approaches you can pick to add incompatible features into your API: extremely stable and expensive, easy-looking but horrible in practice, and even completely versionless yet viable.
+Additionally, I will share best practices on implementing a modern API versioning solution and provide a detailed discussion on the approach chosen by Monite.
 
 When you leave, you'll have enough information to make your API Versioning user-friendly without overburdening your developers.
 
@@ -32,23 +39,39 @@ API Versioning, API, API-First, Stripe, GraphQL, Open-Source, Open Source, Web D
 
 If you google API versioning -- you will be met with simple platform-specific solutions such as ASP.NET controller versioning, countless articles discussing where to put the version -- url, header, accept header, media type header, or a query param -- and then you will see a single Stripe article with a unique approach. Sadly, there is not much detail beyond that. This talk is an attempt to create a review of all API versioning approaches and propose a few recommended options.
 
-First, let's get rid of the most cliché information: if you wish to follow best practices, you will probably use dates or simple numbers as versions and version using a header, and it doesn't really matter which one; but leave a /v1/ in your URL for a rainy day. What I described right now was the conclusion of the 99% of searcheable information on API Versioning.
+First, let's get rid of the most cliché information: if you wish to follow best practices, you will probably use dates or simple numbers as versions and version using a header, and it doesn't really matter which one; but leave a /v1/ in your URL for a rainy day. What I described just now was the conclusion drawn from 99% of the searchable information on API Versioning.
 
-Then I would like to describe versioning in differing levels of isolation:
+Then, I would like to describe versioning in differing levels of isolation:
 
-1. an extremely expensive and stable versioning by separate deployments or separate kubernetes namespaces deployed from separate branches which you would choose if you have a small number of concurrent versions and need the old ones to be rock-solid stable
-2. an easy "add a v2 endpoint" approach which works for very simple version changes but can turn any product into a hot mess if there are multiple versions or if the changes between versions are complex
-3. an easy-looking "copy routes and business logic into a separate directory and route to it" approach that turns any developer's life into hell within only 2-4 versions and which developers [at SuperJob](<https://habr.com/ru/companies/superjob/articles/577650/>) have called "Versioning by suffering". We at Monite have also picked this approach first and sufferred enormously
-4. Per-version response/request converters which allow you to completely separate the versioning interface layer but are hard to scale to many versions
-5. Configuration-based automatic request/response combination layer like they do at SuperJob. It is so complex and company-specific that developing the framework for it is probably an overkill for most companies but it's a valid approach for having a lot of versions nonetheless
-6. Stripe's and Linkedin's migration gate-based approach which allows you to support hundreds of versions at the same time while having minimal duplication in business logic yet requires a nuanced framework to handle all migrations
-7. Versionless GraphQL which solves the majority of problems of API versioning by design. It can be complex to set up and introduce to clients but is one of the cheapest approaches to versioning
+1. An extremely expensive and stable versioning by separate deployments or separate kubernetes namespaces deployed from distinct branches. This method is suitable if you have a small number of concurrent versions and require the old ones to be rock-solid stable.
 
-At Monite, we have chosen Stripe's approach. I have contacted the author of their approach and developed an open-source framework based on our discussion. I will be discussing its methodology and benefits for about a third of my talk. Essentially if you already have a framework or can develop one, having many versions becomes easy and backporting features to all prior versions becomes cheap. This approach allowed Stripe to maintain backwards compatibility with every version since Stripe's inception in 2011.
+2. An easy "add a v2 endpoint" approach works well for straightforward version changes but can turn any product into a hot mess if there are multiple versions, or if the changes between versions are complex.
 
-The core of the methodology is to encapsulate the changes between versions into small "version change modules" which are independent from your business logic. These modules mainly describe three things: what has changed, how to convert a request from prior version to the request of the next version, and how to convert a response from next version to the request of the prior version. The version change modules (or version gates, as Stripe calls them) thus form a chain of migrations: they get automatically applied to every request one after another. This chain effectively turns any request into the request of the latest version and turns the responses from the latest version into responses for any version requested by the user. Thus you have business logic that handles a single version yet your API can support years worth of versions without issue.
+3. An easy-looking "copy routes and business logic into a separate directory and route to it" approach may seem fine initially, but it quickly turns any developer's life into nightmare after just 2-4 versions. Developers [at SuperJob](<https://habr.com/ru/companies/superjob/articles/577650/>) have named this method "Versioning by suffering". At Monite, we jumped headfirst into this approach, thinking it would be a breeze, but we suffered enormously!
 
-Obviously, there are many more things to consider when versioning. I will provide links to all major resources for anyone who wants to delve deeper into it and then I will provide my final recommendation: versioning is hard, unforgiving, and extremely expensive so it is best to mirror the first law of distributed systems here -- if you can afford not to version, then don't.
+1. Per-version response/request converters which allow you to completely separate the versioning interface layer but are hard to scale to many versions,
+
+2. Configuration-based automatic request/response combination layer, like the ones used at SuperJob, are so complex and company-specific that developing the framework for it is probably an overkill for most companies. However, it's a valid approach for managing a lot of versions effectively.
+
+3. Stripe's and Linkedin's migration gate-based approach which allows you to support hundreds of versions simultaneously, minimizing duplication in business logic. Yet it requires a nuanced framework to handle all migrations.
+
+4. Versionless GraphQL solves the majority of problems of API versioning by design. While it can be complex to set up and introduce to clients, it remains one of most cost-effective approaches to versioning.
+
+---
+
+At Monite, we have chosen Stripe's approach. I have contacted the author of their method and, based on our discussion, developed an open-source framework.
+
+I will be discussing its methodology and benefits for about a third of my talk. Essentially, if you already have a framework or can develop one, managing multiple versions becomes easy and backporting features to all prior versions becomes cheap. This approach allowed Stripe to maintain backwards compatibility with every version since Stripe's inception in 2011.
+
+The core of the methodology is to encapsulate the changes between versions into small "version change modules" which are independent from your business logic.
+
+These modules mainly describe three things: what has changed, how to convert a request from prior version to the request of the next version, and how to convert a response from next version to the request of the prior version.
+
+The version change modules (or version gates, as Stripe calls them) thus form a chain of migrations: they get automatically applied to every request one after another. This chain effectively turns any request into the request of the latest version and turns the responses from the latest version into responses for any version requested by the user.
+
+Thus, you have business logic that handles a single version, yet your API can support years worth of versions without any issue.
+
+Obviously, there are many more things to consider when versioning. I will provide links to all major resources for anyone who wants to delve deeper into it, and then I will provide my final recommendation: versioning is hard, unforgiving, and extremely expensive so it is best to mirror the first law of distributed systems here -- if you can afford not to version, then don't.
 
 Links for reference:
 
