@@ -38,9 +38,9 @@ Then I would like to describe versioning in differing levels of isolation:
 
 1. an extremely expensive and stable versioning by separate deployments or separate kubernetes namespaces deployed from separate branches which you would choose if you have a small number of concurrent versions and need the old ones to be rock-solid stable
 2. an easy "add a v2 endpoint" approach which works for very simple version changes but can turn any product into a hot mess if there are multiple versions or if the changes between versions are complex
-3. an easy-looking "copy routes and business logic into a separate directory and route to it" approach that turns any developer's life into hell within only 2-4 versions and which developers at SuperJob (LINK HERE) have called "Versioning by suffering". We at Monite have also picked this approach first and sufferred enormously
+3. an easy-looking "copy routes and business logic into a separate directory and route to it" approach that turns any developer's life into hell within only 2-4 versions and which developers [at SuperJob](<https://habr.com/ru/companies/superjob/articles/577650/>) have called "Versioning by suffering". We at Monite have also picked this approach first and sufferred enormously
 4. Per-version response/request converters which allow you to completely separate the versioning interface layer but are hard to scale to many versions
-5. Configuration-based automatic request/response combination layer like they do at SuperJob (LINK here). It is so complex and company-specific that developing the framework for it is probably an overkill for most companies but it's a valid approach for having a lot of versions nonetheless
+5. Configuration-based automatic request/response combination layer like they do at SuperJob. It is so complex and company-specific that developing the framework for it is probably an overkill for most companies but it's a valid approach for having a lot of versions nonetheless
 6. Stripe's and Linkedin's migration gate-based approach which allows you to support hundreds of versions at the same time while having minimal duplication in business logic yet requires a nuanced framework to handle all migrations
 7. Versionless GraphQL which solves the majority of problems of API versioning by design. It can be complex to set up and introduce to clients but is one of the cheapest approaches to versioning
 
@@ -67,4 +67,4 @@ Links for reference:
 
 ## Video for the program commitee
 
-To be provided later
+TO BE PROVIDED LATER
