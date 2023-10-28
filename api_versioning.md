@@ -77,7 +77,7 @@ This talk will introduce the audience to all necessary concepts and will provide
 
 Links for reference:
 
-* <https://github.com/Ovsyanka83/cadwyn>
+* <https://github.com/zmievsa/cadwyn>
 * <https://stripe.com/blog/api-versioning>
 * <https://habr.com/ru/companies/superjob/articles/577650/>
 * <https://engineering.linkedin.com/blog/2022/-under-the-hood--how-we-built-api-versioning-for-linkedin-market>
