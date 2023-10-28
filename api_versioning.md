@@ -1,4 +1,4 @@
-# API Versioning: The good, the bad, the ugly
+# How to Maintain Hundreds of API Versions and Survive
 
 ## Scope
 
