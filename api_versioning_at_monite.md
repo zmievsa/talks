@@ -2,9 +2,9 @@
 
 ## Why do we need it?
 
-We all love to have shiny new tools but we all hate to constantly update them. This applies to anything: operating systems, apps, APIs, linux packages. It is painful when you write code for interfacing with something and then the code breaks upon update. It is doubly painful when the update was not even initiated by you.
+We all love to have shiny new tools but hate the chore of constantly updating them. This applies to anything: operating systems, apps, APIs, linux packages. It is painful when our code stops working because of an update and it is doubly painful when the update was not even initiated by us.
 
-In web API development, you are constantly at risk of breaking your users' code with every new update. If your main product is an API, then these updates will be terrifying every time. Monite is an API-first company: our products are our API and our white-label SDK and we take great care of keeping our API stable and easy to use. So the problem of breaking changes is near the top of our priority list.
+In web API development, you are constantly at risk of breaking your users' code with every new update. If your main product is an API, then these updates will be terrifying every time. Monite's main products are our API and our white-label SDK. We are an API-first company so we take great care of keeping our API stable and easy to use. Hence the problem of breaking changes is near the top of our priority list.
 
 A common solution is to issue deprecation warnings to your clients and to release breaking changes rarely. Suddenly, your releases can now take months and some features have to stay hidden or even unmerged until each next release. This slows down your development and forces your users to update their integration every few months. If you make releases faster, your users are going to have to update their integration too often. If you lengthen the time between releases, you will move slower as a company. The more inconvenient you make it for users -- the more convenient it is going to be for you, and vice versa. This is certainly not an optimal scenario. We wanted to move at our own pace without breaking anything for existing clients which would we impossible with a regular deprecation approach. This is why we picked an alternative solution: **API versioning**.
 
@@ -96,7 +96,7 @@ Because version changes are dependent on the public interface of the version and
 
 #### Side effects
 
-API contracts are much more complex than just schemas and fields. It consists of the endpoints, status codes, errors, error **messages**, and even business logic behavior. Cadwyn uses the same DSL we described above to handle endpoints and status codes but errors and business logic behavior is a different story: it is impossible to describe using a DSL, it needs to be embedded into business logic. This makes such version changes much more expensive to maintain than all others because they affect business logic. We call this property a "side effect" and it is recommended to avoid them at all costs because of their cost.
+API contracts are much more complex than just schemas and fields. They consist of all endpoints, status codes, errors, error **messages**, and even business logic behaviors. Cadwyn uses the same DSL we described above to handle endpoints and status codes but errors and business logic behaviors are a different story: they are impossible to describe using a DSL, they need to be embedded into business logic. This makes such version changes much more expensive to maintain than all others because they affect business logic. We call this property a "side effect" and it is recommended to avoid them at all costs because of their maintenance burden.
 
 All version changes that want to modify business logic will need to be marked as having side effects. It will serve as a way to know which version changes are "bad":
 
